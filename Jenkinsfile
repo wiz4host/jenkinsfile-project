@@ -11,7 +11,7 @@ pipeline {
         stage("git pull") {
             steps{
                 checkout([$class: 'GitSCM',
-                   branches: scm.branches
+                   branches: scm.branches,
                    extensions: scm.extensions + [[$class: 'CleanCheckout']],
                    submoduleCfg: [], 
                    userRemoteConfigs: [[credentialsId: 'github-wiz4host-UNPWD', url: 'https://github.com/wiz4host/scripts.git']]
