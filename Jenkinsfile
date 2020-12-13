@@ -15,7 +15,7 @@ pipeline {
         nexusbaseurl = 'http://10.0.0.103:8081/'
         release_ver = '1.0'
         ENVIRONMENT = env.BRANCH_NAME
-        TFE_BASE_URL = "https://terraform.dev.sys.mx.us.dev.corp/api/v2/organizations/"
+        TFE_BASE_URL = "https://<terraform_host>/api/v2/organizations/"
         WORKSPACE_NAME="Test_TFE1"
         ORGANIZATION_NAME="POC02"
 
