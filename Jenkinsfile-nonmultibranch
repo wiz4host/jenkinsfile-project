@@ -1,0 +1,57 @@
+
+pipeline {
+    agent {
+        label 'node003'
+    }
+
+    environment {
+        JAVA_HOME = "/usr/lib/jvm/jdk1.8.0_251"
+        MAVEN_CONFIG = "/root/.m2/"
+        M2_HOME = "/usr/lib/maven/apache-maven-3.6.3"
+        gitrepourl = 'git@github.com:wiz4host/infra-maven-project.git'
+        gitcredid = 'github-wiz4host-SSHKEY'
+        nexusbaseurl = 'http://10.0.0.103:8081/'
+
+    }
+    stages {
+
+        stage("ws clean") {
+            steps{
+                cleanWs()
+            }
+        }
+
+        stage("git pull") {
+            steps{
+                //git credentialsId: gitcredid, url: gitrepourl
+                sh "git clone \$gitrepourl \${WORKSPACE}/"
+            }
+        }
+
+        stage("mvn prepare") {
+            steps{
+                withCredentials([file(credentialsId: 'maven-encrypt-master-key-file', variable: 'mvncryptmasterkeyfile')]) {
+                    sh "cp \$mvncryptmasterkeyfile \${MAVEN_CONFIG}/"
+                }
+                sh 'ls -ltr'
+
+            }
+        }
+
+        stage("mvn zip") {
+            steps{ sh "mvn -s settings-nexus.xml -Dnexusbaseurl=\$nexusbaseurl clean package" }
+        }
+
+        stage("mvn upload") {
+            steps{ sh "mvn -s settings-nexus.xml -Dnexusbaseurl=\$nexusbaseurl deploy" }
+        }
+
+        stage("mvn clean") {
+            steps{ sh "mvn -s settings-nexus.xml -Dnexusbaseurl=\$nexusbaseurl clean" }
+        }
+
+        stage("mvn download") {
+            steps{ sh "mvn -s settings-nexus.xml -Dnexusbaseurl=\$nexusbaseurl dependency:copy" }
+        }
+    }
+}
