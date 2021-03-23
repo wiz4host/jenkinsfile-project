@@ -1,0 +1,50 @@
+
+
+
+pipeline{
+    
+    agent any
+    
+    environment {
+        TFEWORKSPACENAME = "${params.TFEWORKSPACE}"
+        TESTVAR          = testfunc('TESTVARVAL')
+        ORGANIZATION     = getfromsweagle('ORGANIZATION_NAME')
+        
+    }
+    
+    stages {
+        
+        stage('Git checkout') { 
+            steps{
+                git branch: 'main', url: 'https://github.com/wiz4host/infra-maven-project.git' 
+                
+            }
+        }
+        
+        stage('get value'){
+            steps{
+                script{
+                    println  "====>" + env.ORGANIZATION
+                    println  "====>" + env.TFEWORKSPACENAME
+                }
+            }
+        }
+    }
+    
+}
+
+
+def testfunc(paramname) {
+    
+    return paramname
+    
+}
+def getfromsweagle(paramname) {
+    
+   SWEAGLEVAL = sh (
+        script: 'python3 sweagle.py sweagle.json sweaglekeyname pipeline-params ' + paramname,
+        returnStdout: true
+    ).trim()
+   return SWEAGLEVAL
+    
+}
