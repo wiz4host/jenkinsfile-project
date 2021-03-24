@@ -33,7 +33,7 @@ pipeline{
         stage('Cleanup Workspace'){
             steps{
                 cleanWs()
-                scripts{
+                script{
                   sh 'ls -ltr'
                   sh 'pwd'
                   sh 'whoami'
