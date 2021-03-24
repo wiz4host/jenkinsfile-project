@@ -41,6 +41,8 @@ def testfunc(paramname) {
 }
 def getfromsweagle(paramname) {
     
+   sh 'python3 sweagle-write-json.py'
+   
    SWEAGLEVAL = sh (
         script: 'python3 sweagle.py sweagle.json sweaglekeyname pipeline-params ' + paramname,
         returnStdout: true
