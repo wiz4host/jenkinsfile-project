@@ -29,6 +29,17 @@ pipeline{
                 }
             }
         }
+        
+        stage('Cleanup Workspace'){
+            steps{
+                cleanWs()
+                scripts{
+                  sh 'ls -ltr'
+                  sh 'pwd'
+                  sh 'whoami'
+                }
+            }
+        }
     }
     
 }
