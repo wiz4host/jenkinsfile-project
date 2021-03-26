@@ -34,6 +34,7 @@ pipeline{
                 script{
                     println  "====>" + env.ORGANIZATION
                     println  "====>" + env.TFEWORKSPACENAME
+		    println  "====>" + env.WSNAME
                 }
             }
         }
