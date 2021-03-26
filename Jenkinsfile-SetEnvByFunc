@@ -13,7 +13,7 @@ pipeline{
 	WSNAME           =  """${sh(
                                     returnStdout: true,
                                     //script: 'echo \$GITREPO | awk -F"/abc.xyz." \'{print \$2}\'| sed \'s|.git||g\'  | sed \'s|\\.|_|g\'| awk -F"core_ws_" \'{print "core_ws-" \$2}\''
-				      script: 'echo \$GITREPO | awk -F"/abc.xyz." \'{print \$2}\'| sed \'s|.git||g\'
+				      script: 'echo \$GITREPO | awk -F"/abc.xyz." \'{print \$2}\'| sed \'s|.git||g\''
                             )}"""
     }
     
