@@ -9,7 +9,15 @@ pipeline{
         TFEWORKSPACENAME = "${params.TFEWORKSPACE}"
         TESTVAR          = testfunc('TESTVARVAL')
         ORGANIZATION     = getfromsweagle('ORGANIZATION_NAME')
-        
+	GITREPO          = "git@gitlab-s.u.c:tech/infra_ws/abc.xyz.core_ws.ccc_hhh_sec.git"
+	WSNAME           =  """${sh(
+					returnStdout: true,
+					script: "echo $GITREPO | awk -F\"/abc.xyz.\" '{print \$2}'| \
+						sed 's|.git| |g' | \
+						sed 's|\\.||g\' | \
+						awk -F\"core_ws\" \'{print \"core_ws-\" \$2}\' | \
+						sed 's|-_|-|g'"
+			   )}"""
     }
     
     stages {
@@ -26,6 +34,7 @@ pipeline{
                 script{
                     println  "====>" + env.ORGANIZATION
                     println  "====>" + env.TFEWORKSPACENAME
+		    println  "====>" + env.WSNAME
                 }
             }
         }
