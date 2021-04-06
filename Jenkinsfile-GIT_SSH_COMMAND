@@ -1,0 +1,32 @@
+pipeline {
+    
+    agent any
+    
+    environment {
+        GITSSHKEYFRMCRED = credentials('github-wiz4host-SSHKEY')
+        GIT_SSH_COMMAND  = "ssh -o StrictHostKeyChecking=no -i " + "${env.GITSSHKEYFRMCRED}"
+    }
+    
+    stages{
+        stage("ws clean") {
+            steps{
+                cleanWs()
+            }
+        }
+        
+        stage('Git checkout') { 
+            steps{
+                sh 'printenv'
+                sh 'git clone git@github.com:wiz4host/infra-maven-project.git'
+                
+            }
+        }
+        stage('Git Fetch'){
+            steps{
+                script{
+                    sh 'cd infra-maven-project; ls -ltr; git fetch'
+                }
+            }
+        }
+    }
+}
