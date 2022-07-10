@@ -12,3 +12,5 @@ withCredentials([file(credentialsId: PRIVATE_KEY, variable: 'my_private_key'),
         writeFile file: 'key/private.pem', text: readFile(my_private_key)
         writeFile file: 'key/public.pem', text: readFile(my_public_key)
     }
+
+kubectl create secret tls test-tls --key="tls.key" --cert="tls.crt"
